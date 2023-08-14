@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Document</title>
+</head>
+<body>
+    <h2>User form</h2>
+    <div id="message"></div>
+    <div>
+        <p>
+            Name: <br>
+            <input name="userName" id="userName" />
+        </p>
+        <p>
+            Age: <br />
+            <input name="userAge" id="userAge" type="number" />
+        </p>
+        <button id="sendBtn">Register</button>
+        <button id="showBtn">Show Users</button>
+    </div>
+
+    <script>
+        document.getElementById("sendBtn").addEventListener("click", send);
+        document.getElementById("showBtn").addEventListener("click", showUsers);
+
+        async function send() {
+            const response = await fetch("/api/user", {
+                method: "POST",
+                headers: { "Accept": "application/json", "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    name: document.getElementById("userName").value,
+                    age: document.getElementById("userAge").value
+                })
+            });
+            const data = await response.json();
+            document.getElementById("message").innerText = data.text;
+        }
+
+        function showUsers() {
+            window.location.href = "/users";
+        }
+    </script>
+</body>
+</html>
